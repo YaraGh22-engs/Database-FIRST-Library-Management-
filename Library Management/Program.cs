@@ -1,4 +1,7 @@
+using Library_Management.IRepositories;
 using Library_Management.Models;
+using Library_Management.Repositories;
+using Library_Management.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +20,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//service and repository registration
+builder.Services.AddScoped<IBookeService, BookService>();
+builder.Services.AddScoped<IBookReo, BookRepo>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

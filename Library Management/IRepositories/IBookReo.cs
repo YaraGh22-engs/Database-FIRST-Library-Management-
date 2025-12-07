@@ -10,6 +10,9 @@ namespace Library_Management.IRepositories
         Task<bool> Create(Book book);
         Task<bool> Update(Book book);
         Task<bool> Remove(Book book);
+        //ADO + SP 
         Task<List<BookRatingDto>> GetBooksRating(); //  قائمة كتب مع متوسط التقييمات لكل كتاب
+        //LINQ
+        IQueryable<Book> GetBooksRating2();
     }
 }

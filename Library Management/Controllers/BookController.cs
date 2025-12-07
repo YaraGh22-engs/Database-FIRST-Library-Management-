@@ -89,6 +89,11 @@ namespace Library_Management.Controllers
             var ratings = await _bookeService.GetBooksRate();
             return Ok(ratings);
         }
-
+        [HttpGet("BooksRating2")]
+        public async Task<ActionResult<BookRatingDto>> BooksRating2()
+        {
+            var ratings = await _bookeService.GetBooksRate2();
+            return Ok(ratings);
+        }
     } 
 }

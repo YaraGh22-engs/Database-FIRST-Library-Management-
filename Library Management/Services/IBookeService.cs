@@ -10,7 +10,10 @@ namespace Library_Management.Services
         Task<bool> CreateBook(CreateUpdateBookDto dto);
         Task<bool> UpdateBook( CreateUpdateBookDto dto);
         Task<bool> DeleteBook(int id);
-
+        //for ADO + SP 
         Task<List<BookRatingDto>> GetBooksRate();
+
+        //for LINQ
+        Task<List<BookRatingDto>> GetBooksRate2();
     }
 }

@@ -142,11 +142,28 @@ namespace Library_Management.Services
             return  await _bookRepo.Remove(book);
         }
 
+        //ADO + SP 
         public async Task<List<BookRatingDto>> GetBooksRate()
         {
             return await _bookRepo.GetBooksRating();
         }
+        //Linq 
+        public async Task<List<BookRatingDto>> GetBooksRate2()
+        {
+            return   _bookRepo.GetBooksRating2()
+                              .AsEnumerable()  // ✅ الحل: Client Evaluation //  // ✅ تنفيذ SQL + تحميل البيانات للذاكرة
+                              .GroupBy(b => new { b.Title, b.Publisher.Name }) // Grouping in memory
+                              .Select(g => new BookRatingDto // Projection in memory
+                              {
+                                  Title = g.Key.Title, // Accessing grouped key
+                                  PublisherName = g.Key.Name ?? "",
+                                  AverageRating = g.Average(b => b.Reviews.Average(r => (double)r.Rating))
+                              })
+                              .OrderByDescending(x => x.AverageRating) //
+                              .ToList();
+        }
 
+         
 
     }
 }

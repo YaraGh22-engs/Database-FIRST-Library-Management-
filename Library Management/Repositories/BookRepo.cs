@@ -2,6 +2,7 @@
 using Library_Management.Dtos;
 using Library_Management.IRepositories;
 using Library_Management.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System.Runtime.Intrinsics.X86;
@@ -115,7 +116,14 @@ namespace Library_Management.Repositories
 //        LEFT JOIN Review r ON b.Id = r.BookId
 //        GROUP BY b.Id, b.Title, p.Name
 //        END
-
+        
+        public IQueryable <Book> GetBooksRating2()
+        {
+            return _context.Books.Include(p => p.Publisher)
+                                        .Include(r => r.Reviews)
+                                        .AsNoTracking();
+             
+        }
 
     }
 }

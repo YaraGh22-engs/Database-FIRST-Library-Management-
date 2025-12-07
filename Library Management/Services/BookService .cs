@@ -4,21 +4,57 @@ using Library_Management.Extension;
 using Library_Management.IRepositories;
 using Library_Management.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Policy;
 
 namespace Library_Management.Services
 {
     public class BookService : IBookeService
     {
-        private readonly IBookReo _bookRepo;  
+        private readonly IBookReo _bookRepo;
+        private readonly IAuthorRepo _authorRepo;
+        private readonly ICategoryRepo _categoryRepo;
+        private readonly IPublisherRepo _publisherRepo;
+        private readonly ILIbraryRepo _IbraryRepo; 
 
-
-        public BookService(IBookReo bookRepo)
+        public BookService(IBookReo bookRepo,
+                            IAuthorRepo authorRepo,
+                            ICategoryRepo categoryRepo,
+                            IPublisherRepo publisherRepo,
+                            ILIbraryRepo libraryRepo 
+                            )
         {
             _bookRepo = bookRepo; 
+            _authorRepo = authorRepo; 
+            _categoryRepo = categoryRepo;
+            _publisherRepo = publisherRepo;
+            _IbraryRepo = libraryRepo; 
+
         }
 
         public async Task<bool> CreateBook(CreateUpdateBookDto dto)
-        { 
+        {
+            // Add a new book and verify Author ID, Category ID, Publisher ID and Libraries  Before saving, ensure the correct link is established.
+            
+            // Validation
+            var autor = await _authorRepo.CheckExistence(dto.AuthorId);
+            if (!autor)
+                throw new ArgumentException("Author is not existed", nameof(autor));
+
+            var category = await _categoryRepo.CheckExistence(dto.CategoryId);
+            if (!category)
+                throw new ArgumentException("Category is not existed", nameof(category));
+
+            var publisher = await _publisherRepo.CheckExistence(dto.PublisherId);
+            if (!publisher)
+                throw new ArgumentException("Publisher is not existed", nameof(publisher));
+
+            foreach (var libId in dto.LibrariesId)
+            {
+                var library = await _IbraryRepo.CheckExistence(libId);
+                if (!library)
+                    throw new ArgumentException($"Library with the id {libId} is not existed", nameof(library));
+            }
+            // dto to entity
             var book = new Book()
             {
                 Title = dto.Title,

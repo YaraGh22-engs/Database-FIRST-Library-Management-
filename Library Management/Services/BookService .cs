@@ -142,6 +142,11 @@ namespace Library_Management.Services
             return  await _bookRepo.Remove(book);
         }
 
+        public async Task<List<BookRatingDto>> GetBooksRate()
+        {
+            return await _bookRepo.GetBooksRating();
+        }
+
 
     }
 }

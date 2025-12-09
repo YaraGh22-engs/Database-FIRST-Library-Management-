@@ -20,6 +20,12 @@ namespace Library_Management.Controllers
             var books = await _bookeService.GetBooks(searchKey);
             return Ok(books);
         }
+        [HttpGet("GetBooksSql")]
+        public async Task<IActionResult> GetBooksFromSql(string? searchKey)
+        {
+            var books = await _bookeService.GetBooksSql(searchKey);
+            return Ok(new { count = books.Count, list = books });
+        }
 
         [HttpGet("GetById")]
         public async Task<ActionResult<Bookdto>> GetBookById(int id)

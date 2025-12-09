@@ -3,13 +3,28 @@ using Library_Management.Models;
 using Library_Management.Repositories;
 using Library_Management.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
-builder.Services.AddControllers();
+
+//builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // ✅ يتجاهل الـ Circular References
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+
+        // ✅ بدون camelCase (اختياري)
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+    });
+
 
 
 // Configure Entity Framework and SQL Server

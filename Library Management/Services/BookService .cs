@@ -114,6 +114,11 @@ namespace Library_Management.Services
             return books.ToList();
         }
 
+        // GetBooks2 :ADO + SP
+        public async Task<List<Bookdto>> GetBooksSql(string searchKey)
+        {
+            return await _bookRepo.GetBooksSql(searchKey);
+        }
         public async Task <bool> UpdateBook(CreateUpdateBookDto dto)
         {
             var book = await _bookRepo.GetById(dto.Id);

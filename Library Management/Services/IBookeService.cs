@@ -6,10 +6,14 @@ namespace Library_Management.Services
     public interface IBookeService
     {
         Task<List<Bookdto>> GetBooks(string? searchKey);
+
+        // SP + ADO
+        Task<List<Bookdto>> GetBooksSql(string? searchKey);
         Task<Bookdto> GetBookById(int id);
         Task<bool> CreateBook(CreateUpdateBookDto dto);
         Task<bool> UpdateBook( CreateUpdateBookDto dto);
         Task<bool> DeleteBook(int id);
+
         //for ADO + SP 
         Task<List<BookRatingDto>> GetBooksRate();
 
